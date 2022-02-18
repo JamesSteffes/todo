@@ -4,6 +4,7 @@ import Tasks from './components/Tasks'
 import Header from './components/Header'
 import Addtask from './Addtask';
 function App() {
+  const [showAddTask, setShowAddTask] = useState(false)
   const [tasks, setTasks] = useState([
     {
       "id": 1,
@@ -37,11 +38,17 @@ function App() {
       )
     )
   }
+  const addTask = (task) => {
+    const id = Math.floor(Math.random() * 1000) + 1
+    console.log(`${task.text} and id is ${id}`)
+    const newTask = { id, ...task }
+    setTasks([...tasks, newTask])
+  }
   return (
     <div className="container">
       <header className="App-header">
-        <Header title="Task Tracker" />
-        <Addtask />
+        <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} title="Task Tracker" />
+        {showAddTask && <Addtask onAdd={addTask} />}
         {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : "No tasks"}
       </header>
     </div>
